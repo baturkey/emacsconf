@@ -19,7 +19,7 @@
       ns-use-native-fullscreen nil
       mode-require-final-newline nil
       split-width-threshold 200
-      exec-path (append exec-path '("/usr/local/bin")))
+      exec-path (append exec-path '("/usr/local/ImageMagick-7.0.8/bin" "/usr/local/bin")))
 (display-time-mode "t")
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -145,10 +145,9 @@
 
 ;; Dumb Jump:
 (use-package dumb-jump
-  :init
-  (setq dump-jump-force-searcher 'rg)
   :config
-  (dumb-jump-mode))
+  (dumb-jump-mode)
+  (setq dump-jump-force-searcher 'rg))
 
 ;; Powerline:
 (use-package powerline
@@ -279,6 +278,16 @@
   :config
   (rg-enable-default-bindings))
 
+;; handlebars:
+(use-package handlebars-mode
+  :config
+  (setq handlebars-basic-offset 4))
+
+;; mongo:
+(use-package inf-mongo
+  :config
+  (setq inf-mongo-command "/usr/local/mongodb/bin/mongo --host 33.33.33.111 baublebar"))
+
 ;;; Minor modes:
 ;; Disable abbrev mode:
 (setq abbrev-mode nil)
@@ -345,7 +354,9 @@
 
 ;;; Shell:
 (add-to-list 'same-window-buffer-names "*shell*")
-(setenv "PATH" (concat "~/bin:/usr/local/bin:/usr/local/sbt/bin:" (getenv "PATH")))
+(setenv "PATH" (concat "~/bin:/usr/local/ImageMagick-7.0.8/bin:/usr/local/bin:/usr/local/sbt/bin:" (getenv "PATH")))
+(setenv "MAGICK_HOME" "/usr/local/ImageMagick-7.0.8")
+(setenv "DYLD_LIBRARY_PATH" "/usr/local/ImageMagick-7.0.8/lib")
 
 ;;; Music:
 ;; Pianobar:
@@ -383,7 +394,7 @@
     (regexp-opt '(".mp3" ".m4a" ".aac"))
     "afplay"))
 
-
+;;; Mastodon:
 (use-package mastodon
   :config
   (setq mastodon-instance-url "https://flumph.masto.host")
@@ -440,7 +451,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (airline-themes powerline org-jira amx emojify mastodon git-gutter+ sql-indent magithub rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package handlebars-mode emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (inf-mongo malyon airline-themes powerline org-jira emojify mastodon git-gutter+ sql-indent magithub rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package handlebars-mode emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
