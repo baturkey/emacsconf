@@ -18,3 +18,4 @@ hackernews
 /mastodon.plstore
 /lisp/local.el
 image-dired/
+/forge-database.sqlite

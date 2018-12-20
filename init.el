@@ -11,7 +11,7 @@
 
 ;;; Global:
 ;; Local settings:
-(load "~/.emacs.d/lisp/local.el")
+(load "~/.emacs.d/lisp/local")
 
 ;; Startup:
 (setq inhibit-startup-screen "t"
@@ -54,14 +54,6 @@
                                        ("~/Sites/platform" . 0)))
   :bind
   ("C-x g" . magit-status))
-
-(use-package magithub
-  :after
-  magit
-  :ensure
-  t
-  :config
-  (magithub-feature-autoinject t))
 
 ;; Purpose:
 (use-package window-purpose
@@ -451,7 +443,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (inf-mongo malyon airline-themes powerline org-jira emojify mastodon git-gutter+ sql-indent magithub rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package handlebars-mode emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (forge inf-mongo malyon airline-themes powerline org-jira emojify mastodon git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package handlebars-mode emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
