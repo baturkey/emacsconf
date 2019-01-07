@@ -82,18 +82,18 @@
 ;; Vagrant:
 (use-package vagrant
   :bind
-  (("C-c C-v b" . vagrant-ssh) ; b for bash
-   ("C-c C-v c" . vagrant-catalog-sync)
-   ("C-c C-v e" . vagrant-edit-nginx-conf)
-   ("C-c C-v g" . vagrant-gulp-logs)
-   ("C-c C-v h" . vagrant-halt)
-   ("C-c C-v l" . vagrant-error-logs)
-   ("C-c C-v n" . vagrant-restart-nginx)
-   ("C-c C-v p" . vagrant-provision)
-   ("C-c C-v r" . vagrant-reload)
-   ("C-c C-v s" . vagrant-restart-services)
-   ("C-c C-v t" . vagrant-run-tests)
-   ("C-c C-v u" . vagrant-up-provision))
+  (("C-c b" . vagrant-ssh) ; b for bash
+   ("C-c c" . vagrant-catalog-sync)
+   ("C-c e" . vagrant-edit-nginx-conf)
+   ("C-c g" . vagrant-gulp-logs)
+   ("C-c h" . vagrant-halt)
+   ("C-c l" . vagrant-error-logs)
+   ("C-c n" . vagrant-restart-nginx)
+   ("C-c p" . vagrant-provision)
+   ("C-c r" . vagrant-reload)
+   ("C-c s" . vagrant-restart-services)
+   ("C-c t" . vagrant-run-tests)
+   ("C-c u" . vagrant-up-provision))
   :config
   (defun vagrant-ssh-command (command buffer &optional persistent)
     (if (and persistent (get-buffer buffer))
@@ -105,7 +105,7 @@
 
   (defun vagrant-catalog-sync ()
     (interactive)
-    (vagrant-ssh-command "sudo /vagrant/scripts/provision/vagrant.sh sync" "*util*"))
+    (async-shell-command "~/bin/stagescala.sh" "*util*"))
 
   (defun vagrant-gulp-logs ()
     (interactive)
@@ -264,11 +264,6 @@
   (setq ensime-startup-notification nil
         ensime-sbt-command "/usr/local/sbt/bin/sbt"
         sbt:program-name "/usr/local/sbt/bin/sbt"))
-
-;; ripgrep:
-(use-package rg
-  :config
-  (rg-enable-default-bindings))
 
 ;; handlebars:
 (use-package handlebars-mode
