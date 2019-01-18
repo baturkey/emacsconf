@@ -51,7 +51,8 @@
   (setq magit-bury-buffer-function 'magit-mode-quit-window
         magit-repository-directories '(("~/.emacs.d/" . 0)
                                        ("~/.emacs.d/lib/" . 1)
-                                       ("~/Sites/platform" . 0)))
+                                       ("~/Sites/platform/" . 0)
+                                       ("~/bin/eulerjs/" . 0)))
   :bind
   ("C-x g" . magit-status))
 
@@ -85,6 +86,7 @@
   (("C-c b" . vagrant-ssh) ; b for bash
    ("C-c c" . vagrant-catalog-sync)
    ("C-c e" . vagrant-edit-nginx-conf)
+   ("C-c f" . vagrant-fetch-product-json)
    ("C-c g" . vagrant-gulp-logs)
    ("C-c h" . vagrant-halt)
    ("C-c l" . vagrant-error-logs)
@@ -133,6 +135,10 @@
       (cd "~/Sites/platform")
       (async-shell-command "vagrant up --provision" "*Vagrant*")
       (cd old-directory)))
+
+  (defun vagrant-fetch-product-json ()
+    (interactive)
+    (vagrant-ssh-command (format "curl http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
   )
 
 ;; Dumb Jump:
@@ -185,7 +191,7 @@
         web-mode-script-padding 0
         web-mode-engines-alist '(("php" . "\\.phtml\\'")))
   :mode
-  "\\.html\\'" "\\.phtml\\'")
+  "\\.html\\'" "\\.phtml\\'" "\\.handlebars\\'")
 
 ;; Elisp:
 (use-package lisp-mode
@@ -264,16 +270,6 @@
   (setq ensime-startup-notification nil
         ensime-sbt-command "/usr/local/sbt/bin/sbt"
         sbt:program-name "/usr/local/sbt/bin/sbt"))
-
-;; handlebars:
-(use-package handlebars-mode
-  :config
-  (setq handlebars-basic-offset 4))
-
-;; mongo:
-(use-package inf-mongo
-  :config
-  (setq inf-mongo-command "/usr/local/mongodb/bin/mongo --host 33.33.33.111 baublebar"))
 
 ;;; Minor modes:
 ;; Disable abbrev mode:
@@ -438,7 +434,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (forge inf-mongo malyon airline-themes powerline emojify mastodon git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package handlebars-mode emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (forge inf-mongo malyon airline-themes powerline emojify mastodon git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
