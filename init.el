@@ -138,7 +138,7 @@
 
   (defun vagrant-fetch-product-json ()
     (interactive)
-    (vagrant-ssh-command (format "curl http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
+    (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
   )
 
 ;; Dumb Jump:
@@ -376,6 +376,13 @@
   (define-emms-simple-player afplay '(file)
     (regexp-opt '(".mp3" ".m4a" ".aac"))
     "afplay"))
+
+;;; Mail:
+(use-package mu4e
+  :config
+  (setq mu4e-drafts-folder "/mu4edrafts"
+        mu4e-get-mail-command "offlineimap"
+        mu4e-update-interval 300))
 
 ;;; Mastodon:
 (use-package mastodon
