@@ -49,6 +49,17 @@
 (use-package magit
   :init
   (setq magit-bury-buffer-function 'magit-mode-quit-window
+        magit-display-buffer-function (lambda (buffer)
+                                        (display-buffer
+                                         buffer (if (and (derived-mode-p 'magit-mode)
+                                                         (memq (with-current-buffer buffer major-mode)
+                                                               '(magit-process-mode
+                                                                 magit-revision-mode
+                                                                 magit-diff-mode
+                                                                 magit-stash-mode
+                                                                 magit-status-mode)))
+                                                    nil
+                                                  '(display-buffer-same-window))))
         magit-repository-directories '(("~/.emacs.d/" . 0)
                                        ("~/.emacs.d/lib/" . 1)
                                        ("~/Sites/platform/" . 0)
@@ -144,8 +155,7 @@
 ;; Dumb Jump:
 (use-package dumb-jump
   :config
-  (dumb-jump-mode)
-  (setq dump-jump-force-searcher 'rg))
+  (setq dumb-jump-force-searcher 'rg))
 
 ;; Powerline:
 (use-package powerline
@@ -419,6 +429,12 @@
   (setq wttrin-default-cities          '("New York" "Chicago")
         wttrin-default-accept-language '("Accept-Language" . "en-US")))
 
+(defun eshell-top ()
+  (interactive)
+  (eshell-command "top"))
+
+(bind-key "C-c =" 'eshell-top)
+
 ;;; Custom:
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -429,12 +445,11 @@
  '(custom-enabled-themes (quote (tango-dark airline-doom-one)))
  '(custom-safe-themes
    (quote
-    ("a94f1a015878c5f00afab321e4fef124b2fc3b823c8ddd89d360d710fc2bddfc" "0cd56f8cd78d12fc6ead32915e1c4963ba2039890700458c13e12038ec40f6f5" "3eb93cd9a0da0f3e86b5d932ac0e3b5f0f50de7a0b805d4eb1f67782e9eb67a4" "251348dcb797a6ea63bbfe3be4951728e085ac08eee83def071e4d2e3211acc3" "01e067188b0b53325fc0a1c6e06643d7e52bc16b6653de2926a480861ad5aa78" "721bb3cb432bb6be7c58be27d583814e9c56806c06b4077797074b009f322509" "946e871c780b159c4bb9f580537e5d2f7dba1411143194447604ecbaf01bd90c" "8aca557e9a17174d8f847fb02870cb2bb67f3b6e808e46c0e54a44e3e18e1020" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" "3e6b5d23ee79d0613584bc3279eae87b1d4cf4105732db60902b391c3d94b978" "d2e9c7e31e574bf38f4b0fb927aaff20c1e5f92f72001102758005e53d77b8c9" "7e78a1030293619094ea6ae80a7579a562068087080e01c2b8b503b27900165c" "a3fa4abaf08cc169b61dea8f6df1bbe4123ec1d2afeb01c17e11fdc31fc66379" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
+    ("a94f1a015878c5f00afab321e4fef124b2fc3b823c8ddd89d360d710fc2bddfc" default)))
  '(custom-theme-allow-multiple-selections t)
  '(eshell-modules-list
    (quote
     (eshell-alias eshell-banner eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-rebind eshell-script eshell-term eshell-unix)))
- '(grep-command "grep --exclude \"*.min.*\" -nHR -e   .")
  '(logview-additional-timestamp-formats
    (quote
     (("Magento"
