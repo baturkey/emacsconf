@@ -12,6 +12,7 @@
 ;;; Global:
 ;; Local settings:
 (load "~/.emacs.d/lisp/local")
+(load "~/.emacs.d/lisp/loglink")
 
 ;; Startup:
 (setq inhibit-startup-screen "t"
@@ -96,6 +97,7 @@
   :bind
   (("C-c b" . vagrant-ssh) ; b for bash
    ("C-c c" . vagrant-catalog-sync)
+   ("C-c d" . vagrant-debug-provision)
    ("C-c e" . vagrant-edit-nginx-conf)
    ("C-c f" . vagrant-fetch-product-json)
    ("C-c g" . vagrant-gulp-logs)
@@ -119,6 +121,10 @@
   (defun vagrant-catalog-sync ()
     (interactive)
     (async-shell-command "~/bin/stagescala.sh" "*util*"))
+
+  (defun vagrant-debug-provision ()
+    (interactive)
+    (vagrant-ssh-command "tail -f /tmp/provision.log" "*logs*" 1))
 
   (defun vagrant-gulp-logs ()
     (interactive)
@@ -383,6 +389,7 @@
   (require 'emms-info-libtag)
   (require 'emms-player-simple)
   (emms-all)
+  (emms-librefm-scrobbler-enable)
   (define-emms-simple-player afplay '(file)
     (regexp-opt '(".mp3" ".m4a" ".aac"))
     "afplay"))
@@ -393,35 +400,6 @@
   (setq mu4e-drafts-folder "/mu4edrafts"
         mu4e-get-mail-command "offlineimap"
         mu4e-update-interval 300))
-
-;;; Mastodon:
-(use-package mastodon
-  :config
-  (setq mastodon-instance-url "https://flumph.masto.host")
-
-  (bind-keys
-   :map mastodon-mode-map
-   ("#" . mastodon-tl--get-tag-timeline)
-   ("A" . mastodon-profile--get-toot-author)
-   ("F" . mastodon-tl--get-federated-timeline)
-   ("H" . mastodon-tl--get-home-timeline)
-   ("L" . mastodon-tl--get-local-timeline)
-   ("M-n" . mastodon-tl--next-tab-item)
-   ("M-p" . mastodon-tl--previous-tab-item)
-   ("N" . mastodon-notifications--get)
-   ("P" . mastodon-profile--show-user)
-   ("Q" . kill-buffer-and-window)
-   ("T" . mastodon-tl--thread)
-   ("b" . mastodon-toot--toggle-boost)
-   ("c" . mastodon-tl--toggle-spoiler-text-in-toot)
-   ("f" . mastodon-toot--toggle-favourite)
-   ("g" . mastodon-tl--update)
-   ("n" . mastodon-tl--goto-next-toot)
-   ("p" . mastodon-tl--goto-prev-toot)
-   ("r" . mastodon-toot--reply)
-   ("t" . mastodon-toot)
-   ("y" . bury-buffer)               ;Only bury
-   ("z" . quit-window)))             ;Quit + bury
 
 ;;; Weather:
 (use-package wttrin
@@ -456,7 +434,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (forge inf-mongo malyon airline-themes powerline emojify mastodon git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (forge airline-themes powerline sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
