@@ -399,6 +399,7 @@
   :config
   (setq mu4e-drafts-folder "/mu4edrafts"
         mu4e-get-mail-command "offlineimap"
+        mu4e-view-show-images t
         mu4e-update-interval 300))
 
 ;;; Weather:
