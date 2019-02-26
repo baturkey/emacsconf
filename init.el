@@ -435,7 +435,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (forge airline-themes powerline sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel gnugo json-mode python-mode magit php-mode web-mode)))
+    (dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
