@@ -64,6 +64,7 @@
         magit-repository-directories '(("~/.emacs.d/" . 0)
                                        ("~/.emacs.d/lib/" . 1)
                                        ("~/Sites/platform/" . 0)
+                                       ("~/Sites/animated_bar_chart/" . 0)
                                        ("~/bin/eulerjs/" . 0)))
   :bind
   ("C-x g" . magit-status))
@@ -205,7 +206,8 @@
   :init
   (setq web-mode-enable-auto-pairing nil
         web-mode-script-padding 0
-        web-mode-engines-alist '(("php" . "\\.phtml\\'")))
+        web-mode-engines-alist '(("php" . "\\.phtml\\'")
+                                 ("ctemplate" . "\\.handlebars\\'")))
   :mode
   "\\.html\\'" "\\.phtml\\'" "\\.handlebars\\'")
 
@@ -287,6 +289,11 @@
         ensime-sbt-command "/usr/local/sbt/bin/sbt"
         sbt:program-name "/usr/local/sbt/bin/sbt"))
 
+;; Android:
+(use-package android-mode
+  :init
+  (setq android-mode-sdk-dir "~/Library/Android/sdk"))
+
 ;;; Minor modes:
 ;; Disable abbrev mode:
 (setq abbrev-mode nil)
@@ -353,7 +360,7 @@
 
 ;;; Shell:
 (add-to-list 'same-window-buffer-names "*shell*")
-(setenv "PATH" (concat "~/bin:/usr/local/ImageMagick-7.0.8/bin:/usr/local/bin:/usr/local/sbt/bin:" (getenv "PATH")))
+(setenv "PATH" (concat "~/bin:/usr/local/bin:/usr/local/sbt/bin:/Users/jeffrey.liu/Library/Android/sdk/tools/bin:" (getenv "PATH")))
 (setenv "MAGICK_HOME" "/usr/local/ImageMagick-7.0.8")
 (setenv "DYLD_LIBRARY_PATH" "/usr/local/ImageMagick-7.0.8/lib")
 
@@ -435,7 +442,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (diffview github-review android-mode dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
