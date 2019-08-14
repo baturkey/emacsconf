@@ -98,11 +98,13 @@
   :bind
   (("C-c b" . vagrant-ssh) ; b for bash
    ("C-c c" . vagrant-catalog-sync)
+   ("C-c C" . vagrant-css)
    ("C-c d" . vagrant-debug-provision)
    ("C-c e" . vagrant-edit-nginx-conf)
    ("C-c f" . vagrant-fetch-product-json)
    ("C-c g" . vagrant-gulp-logs)
    ("C-c h" . vagrant-halt)
+   ("C-c J" . vagrant-javascript)
    ("C-c l" . vagrant-error-logs)
    ("C-c n" . vagrant-restart-nginx)
    ("C-c p" . vagrant-provision)
@@ -123,6 +125,10 @@
     (interactive)
     (async-shell-command "~/bin/stagescala.sh" "*util*"))
 
+  (defun vagrant-css ()
+    (interactive)
+    (vagrant-ssh-command "cd /opt/tools/gulp; node_modules/.bin/gulp styles:node styles:magento" "*util*"))
+
   (defun vagrant-debug-provision ()
     (interactive)
     (vagrant-ssh-command "tail -f /tmp/provision.log" "*logs*" 1))
@@ -130,6 +136,10 @@
   (defun vagrant-gulp-logs ()
     (interactive)
     (vagrant-ssh-command "sudo /vagrant/scripts/provision/vagrant.sh gulp" "*gulp*" 1))
+
+  (defun vagrant-javascript ()
+    (interactive)
+    (vagrant-ssh-command "cd /opt/tools/gulp; node_modules/.bin/gulp scripts:node:client scripts:node:server scripts:magento" "*util*"))
 
   (defun vagrant-error-logs ()
     (interactive)
@@ -289,11 +299,6 @@
         ensime-sbt-command "/usr/local/sbt/bin/sbt"
         sbt:program-name "/usr/local/sbt/bin/sbt"))
 
-;; Android:
-(use-package android-mode
-  :init
-  (setq android-mode-sdk-dir "~/Library/Android/sdk"))
-
 ;;; Minor modes:
 ;; Disable abbrev mode:
 (setq abbrev-mode nil)
@@ -415,11 +420,19 @@
   (setq wttrin-default-cities          '("New York" "Chicago")
         wttrin-default-accept-language '("Accept-Language" . "en-US")))
 
+(use-package diffview)
+
+(use-package github-review)
+
 (defun eshell-top ()
   (interactive)
   (eshell-command "top"))
 
 (bind-key "C-c =" 'eshell-top)
+
+(use-package mastodon
+  :init
+  (setq mastodon-instance-url "https://flumph.masto.host"))
 
 ;;; Custom:
 (custom-set-variables
@@ -427,6 +440,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(canlock-password "74ed7e25935d7bbb4a3e536a8166c56be0279d18")
  '(comint-process-echoes t)
  '(custom-enabled-themes (quote (tango-dark airline-doom-one)))
  '(custom-safe-themes
@@ -442,7 +456,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (diffview github-review android-mode dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
+    (gopher mastodon diffview github-review dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
  '(save-interprogram-paste-before-kill t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
