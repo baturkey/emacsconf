@@ -20,7 +20,8 @@
       ns-use-native-fullscreen nil
       mode-require-final-newline nil
       split-width-threshold 200
-      exec-path (append exec-path '("/usr/local/ImageMagick-7.0.8/bin" "/usr/local/bin")))
+      exec-path (append '("/usr/local/ImageMagick-7.0.8/bin" "/usr/local/bin") exec-path)
+      )
 (display-time-mode "t")
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -119,6 +120,7 @@
       (let ((old-directory default-directory))
         (cd "~/Sites/platform")
         (async-shell-command (format "vagrant ssh -c '%s'" command) buffer)
+        (unless persistent (with-current-buffer "*util*" (view-mode)))
         (cd old-directory))))
 
   (defun vagrant-catalog-sync ()
@@ -166,8 +168,7 @@
 
   (defun vagrant-fetch-product-json ()
     (interactive)
-    (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
-  )
+    (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*")))
 
 ;; Dumb Jump:
 (use-package dumb-jump
@@ -175,11 +176,10 @@
   (setq dumb-jump-force-searcher 'rg))
 
 ;; Powerline:
-(use-package powerline
+(use-package powerline)
+(use-package airline-themes
   :config
-  (powerline-default-theme))
-
-(use-package airline-themes)
+  (load-theme 'airline-doom-one t))
 
 ;;; Major modes:
 ;; JavaScript:
@@ -334,10 +334,6 @@
         gnus-directory "~/.emacs.d/News/"
         gnus-use-full-window nil
         gnus-always-read-dribble-file t)
-  ;; Reddit:
-  (require 'nnreddit "~/.emacs.d/lisp/nnreddit.el")
-  (add-to-list 'gnus-secondary-select-methods
-               '(nnreddit ""))
   ;; Atom feeds:
   (require 'mm-url)
   (defadvice mm-url-insert (after DE-convert-atom-to-rss () )
@@ -375,7 +371,7 @@
   :init
   (setq pianobar-command "/usr/local/bin/pianobar"
         pianobar-username "baturkey@gmail.com"
-        pianobar-station 9)
+        pianobar-station 10)
   :bind
   (("<f13>" . pianobar-start-or-play-or-pause)
    ("<f14>" . pianobar-next-song)
@@ -391,6 +387,7 @@
 (use-package emms
   :init
   (setq emms-info-functions '(emms-info-libtag)
+        emms-source-file-default-directory "~/Music/"
         emms-player-list    `(emms-player-afplay))
   :bind
   (("<f16>" . emms-previous)
@@ -405,14 +402,6 @@
   (define-emms-simple-player afplay '(file)
     (regexp-opt '(".mp3" ".m4a" ".aac"))
     "afplay"))
-
-;;; Mail:
-(use-package mu4e
-  :config
-  (setq mu4e-drafts-folder "/mu4edrafts"
-        mu4e-get-mail-command "offlineimap"
-        mu4e-view-show-images t
-        mu4e-update-interval 300))
 
 ;;; Weather:
 (use-package wttrin
@@ -442,7 +431,7 @@
  ;; If there is more than one, they won't work right.
  '(canlock-password "74ed7e25935d7bbb4a3e536a8166c56be0279d18")
  '(comint-process-echoes t)
- '(custom-enabled-themes (quote (tango-dark airline-doom-one)))
+ '(custom-enabled-themes (quote (airline-doom-one tango-dark)))
  '(custom-safe-themes
    (quote
     ("a94f1a015878c5f00afab321e4fef124b2fc3b823c8ddd89d360d710fc2bddfc" default)))
@@ -456,8 +445,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (gopher mastodon diffview github-review dired-git-info request hierarchy forge inf-mongo malyon airline-themes powerline emojify git-gutter+ sql-indent rg hackernews csv-mode swiper wttrin xref-js2 edbi-database-url edbi js2-refactor popup-imenu ensime dumb-jump vagrant-tramp restclient logview window-purpose use-package emms smartparens flycheck org pianobar vagrant babel markdown-mode gnugo json-mode python-mode magit php-mode web-mode)))
- '(save-interprogram-paste-before-kill t))
+    (js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
