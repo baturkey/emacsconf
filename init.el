@@ -20,7 +20,7 @@
       ns-use-native-fullscreen nil
       mode-require-final-newline nil
       split-width-threshold 200
-      exec-path (append '("/usr/local/ImageMagick-7.0.8/bin" "/usr/local/bin") exec-path)
+      exec-path (append '("/usr/local/bin") exec-path)
       )
 (display-time-mode "t")
 (scroll-bar-mode 0)
@@ -120,7 +120,7 @@
       (let ((old-directory default-directory))
         (cd "~/Sites/platform")
         (async-shell-command (format "vagrant ssh -c '%s'" command) buffer)
-        (unless persistent (with-current-buffer "*util*" (view-mode)))
+        (unless persistent (with-current-buffer buffer (view-mode)))
         (cd old-directory))))
 
   (defun vagrant-catalog-sync ()
@@ -361,9 +361,7 @@
 
 ;;; Shell:
 (add-to-list 'same-window-buffer-names "*shell*")
-(setenv "PATH" (concat "~/bin:/usr/local/bin:/usr/local/sbt/bin:/Users/jeffrey.liu/Library/Android/sdk/tools/bin:" (getenv "PATH")))
-(setenv "MAGICK_HOME" "/usr/local/ImageMagick-7.0.8")
-(setenv "DYLD_LIBRARY_PATH" "/usr/local/ImageMagick-7.0.8/lib")
+(setenv "PATH" (concat "~/bin:/usr/local/bin:/usr/local/sbt/bin:/usr/local/mysql/bin:/Users/jeffrey.liu/Library/Android/sdk/tools/bin:" (getenv "PATH")))
 
 ;;; Music:
 ;; Pianobar:
@@ -445,7 +443,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
+    (hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
