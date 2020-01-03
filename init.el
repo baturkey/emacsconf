@@ -168,7 +168,7 @@
       (3 "b" "Vagrant SSH" vagrant-ssh)
       ]
      ["Services"
-       (3 "b" "Restart Services" vagrant-restart-services)
+       (3 "r" "Restart Services" vagrant-restart-services)
        (3 "c" "Sync Catalog" vagrant-catalog-sync)
        ]
      ]
