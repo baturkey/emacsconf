@@ -66,6 +66,7 @@
                                        ("~/.emacs.d/lib/" . 1)
                                        ("~/Sites/platform/" . 0)
                                        ("~/Sites/animated_bar_chart/" . 0)
+                                       ("~/bin/aoc/" . 0)
                                        ("~/bin/eulerjs/" . 0)))
   :bind
   ("C-x g" . magit-status))
@@ -94,25 +95,11 @@
   (purpose-compile-user-configuration)
   (purpose-x-magit-single-on))
 
+(use-package docker
+  :bind ("C-c d" . docker))
+
 ;; Vagrant:
 (use-package vagrant
-  :bind
-  (("C-c b" . vagrant-ssh) ; b for bash
-   ("C-c c" . vagrant-catalog-sync)
-   ("C-c C" . vagrant-css)
-   ("C-c d" . vagrant-debug-provision)
-   ("C-c e" . vagrant-edit-nginx-conf)
-   ("C-c f" . vagrant-fetch-product-json)
-   ("C-c g" . vagrant-gulp-logs)
-   ("C-c h" . vagrant-halt)
-   ("C-c J" . vagrant-javascript)
-   ("C-c l" . vagrant-error-logs)
-   ("C-c n" . vagrant-restart-nginx)
-   ("C-c p" . vagrant-provision)
-   ("C-c r" . vagrant-reload)
-   ("C-c s" . vagrant-restart-services)
-   ("C-c t" . vagrant-run-tests)
-   ("C-c u" . vagrant-up-provision))
   :config
   (defun vagrant-ssh-command (command buffer &optional persistent)
     (if (and persistent (get-buffer buffer))
@@ -168,7 +155,50 @@
 
   (defun vagrant-fetch-product-json ()
     (interactive)
-    (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*")))
+    (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
+
+  (define-transient-command vagrant-menu ()
+    "Show menu buffer for vagrant commands."
+    [
+     ["System"
+      (3 "u" "Vagrant Up" vagrant-up-provision)
+      (3 "r" "Vagrant Reload" vagrant-reload)
+      (3 "p" "Vagrant Provision" vagrant-provision)
+      (3 "h" "Vagrant Halt" vagrant-halt)
+      (3 "b" "Vagrant SSH" vagrant-ssh)
+      ]
+     ["Services"
+       (3 "b" "Restart Services" vagrant-restart-services)
+       (3 "c" "Sync Catalog" vagrant-catalog-sync)
+       ]
+     ]
+
+    [
+     ["Gulp"
+      (3 "g" "Run Gulp" vagrant-gulp-logs)
+      (3 "C" "Run Gulp CSS" vagrant-css)
+      (3 "J" "Run Gulp JS" vagrant-javascript)
+      ]
+     ["Logs"
+      (3 "l" "Error Logs" vagrant-error-logs)
+      (3 "d" "Debug Provision" vagrant-debug-provision)
+      ]
+     ]
+
+    [
+     ["Nginx"
+      (3 "e" "Edit Nginx Configuration" vagrant-edit-nginx-conf)
+      (3 "n" "Restart Nginx" vagrant-restart-nginx)
+      ]
+     ["Misc"
+      (3 "t" "Run Tests" vagrant-run-tests)
+      (3 "f" "Fetch product JSON" vagrant-fetch-product-json)
+      ]
+     ]
+    )
+
+    (global-set-key (kbd "C-c v") #'vagrant-menu)
+  )
 
 ;; Dumb Jump:
 (use-package dumb-jump
@@ -194,7 +224,7 @@
     (smartparens-mode)
     (flycheck-mode)
     (js2-refactor-mode)
-    (js2r-add-keybindings-with-prefix "C-c C-m")
+    (js2r-add-keybindings-with-prefix "C-c C-r")
     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))
   :hook
   (js2-mode . javascript-hook)
@@ -421,6 +451,11 @@
   :init
   (setq mastodon-instance-url "https://flumph.masto.host"))
 
+(use-package rg
+  :init
+  (rg-use-old-defaults)
+  (rg-enable-menu))
+
 ;;; Custom:
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -443,7 +478,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
+    (docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
