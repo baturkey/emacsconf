@@ -100,6 +100,8 @@
 
 ;; Vagrant:
 (use-package vagrant
+  :after
+  transient
   :config
   (defun vagrant-ssh-command (command buffer &optional persistent)
     (if (and persistent (get-buffer buffer))
@@ -112,7 +114,7 @@
 
   (defun vagrant-catalog-sync ()
     (interactive)
-    (async-shell-command "~/bin/stagescala.sh" "*util*"))
+    (vagrant-ssh-command "sudo /vagrant/scripts/provision/vagrant.sh sync" "*util*"))
 
   (defun vagrant-css ()
     (interactive)
@@ -157,6 +159,10 @@
     (interactive)
     (vagrant-ssh-command (format "curl --silent http://localhost:8000/products/%s | python -m json.tool" (read-string "Enter PID:")) "*test-json*"))
 
+  (defun vagrant-send-test-order-confirmation ()
+    (interactive)
+    (vagrant-ssh-command "php /opt/platform/magento/scripts/send_test_order_confirmation.php" "*util*"))
+
   (define-transient-command vagrant-menu ()
     "Show menu buffer for vagrant commands."
     [
@@ -174,10 +180,9 @@
      ]
 
     [
-     ["Gulp"
-      (3 "g" "Run Gulp" vagrant-gulp-logs)
-      (3 "C" "Run Gulp CSS" vagrant-css)
-      (3 "J" "Run Gulp JS" vagrant-javascript)
+     ["Nginx"
+      (3 "e" "Edit Nginx Configuration" vagrant-edit-nginx-conf)
+      (3 "n" "Restart Nginx" vagrant-restart-nginx)
       ]
      ["Logs"
       (3 "l" "Error Logs" vagrant-error-logs)
@@ -186,13 +191,15 @@
      ]
 
     [
-     ["Nginx"
-      (3 "e" "Edit Nginx Configuration" vagrant-edit-nginx-conf)
-      (3 "n" "Restart Nginx" vagrant-restart-nginx)
+     ["Gulp"
+      (3 "g" "Run Gulp" vagrant-gulp-logs)
+      (3 "C" "Run Gulp CSS" vagrant-css)
+      (3 "J" "Run Gulp JS" vagrant-javascript)
       ]
      ["Misc"
       (3 "t" "Run Tests" vagrant-run-tests)
       (3 "f" "Fetch product JSON" vagrant-fetch-product-json)
+      (3 "S" "Send Test Order Confirmation" vagrant-send-test-order-confirmation)
       ]
      ]
     )
@@ -348,8 +355,6 @@
 
 ;;; Gnus:
 (use-package gnus
-  :init
-  (defun agnus() (interactive) (make-thread #'gnus))
   :config
   (setq gnus-select-method '(nnnil "")
         gnus-save-newsrc-file nil
@@ -378,7 +383,11 @@
                            (expand-file-name "~/.emacs.d/atom2rss.xsl") "-")
       (goto-char (point-min))
       (message "Converting Atom to RSS... done")))
-  (ad-activate 'mm-url-insert))
+  (ad-activate 'mm-url-insert)
+
+  (require 'nnreddit "~/.emacs.d/lisp/nnreddit.el")
+  (add-to-list 'gnus-secondary-select-methods
+               '(nnreddit "")))
 
 ;;; Indentation:
 (setq my-indent 4
@@ -478,7 +487,7 @@
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
  '(package-selected-packages
    (quote
-    (docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
+    (emojify docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
