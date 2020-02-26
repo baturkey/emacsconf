@@ -65,6 +65,7 @@
         magit-repository-directories '(("~/.emacs.d/" . 0)
                                        ("~/.emacs.d/lib/" . 1)
                                        ("~/Sites/platform/" . 0)
+                                       ("~/Sites/platform/platform/highjump-sync/" . 0)
                                        ("~/Sites/animated_bar_chart/" . 0)
                                        ("~/bin/aoc/" . 0)
                                        ("~/bin/eulerjs/" . 0)))
@@ -465,6 +466,15 @@
   (rg-use-old-defaults)
   (rg-enable-menu))
 
+(defun setup-jinja ()
+  (web-mode)
+  (setq indent-tabs-mode t)
+  (setq-default tab-width 4)
+  (web-mode-use-tabs)
+)
+
+(add-to-list 'auto-mode-alist '("\\.jinja2\\'" . setup-jinja))
+
 ;;; Custom:
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -485,9 +495,14 @@
    (quote
     (("Magento"
       (java-pattern . "YYYY-MM-dd'T'HH:mm:ss+00:00")))))
+ '(newsticker-url-list
+   (quote
+    (("BBC News - Home" "http://feeds.bbci.co.uk/news/rss.xml" nil nil nil)
+     ("FiveThirtyEight" "https://fivethirtyeight.com/all/feed" nil nil nil)
+     ("CNN - Top Stories" "http://rss.cnn.com/rss/cnn_topstories.rss" nil nil nil))))
  '(package-selected-packages
    (quote
-    (emojify docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnreddit nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
+    (python emojify docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
