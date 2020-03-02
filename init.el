@@ -205,8 +205,8 @@
      ]
     )
 
-    (global-set-key (kbd "C-c v") #'vagrant-menu)
-  )
+  :bind
+  ("C-c v" . vagrant-menu))
 
 ;; Dumb Jump:
 (use-package dumb-jump
@@ -218,6 +218,10 @@
 (use-package airline-themes
   :config
   (load-theme 'airline-doom-one t))
+
+;; Scrolling:
+(bind-key "C-<up>" 'scroll-down-line)
+(bind-key "C-<down>" 'scroll-up-line)
 
 ;;; Major modes:
 ;; JavaScript:
@@ -251,13 +255,20 @@
 
 ;; Web:
 (use-package web-mode
+  :config
+  (defun setup-jinja ()
+    (web-mode)
+    (setq indent-tabs-mode t)
+    (web-mode-use-tabs)
+    )
   :init
   (setq web-mode-enable-auto-pairing nil
         web-mode-script-padding 0
         web-mode-engines-alist '(("php" . "\\.phtml\\'")
                                  ("ctemplate" . "\\.handlebars\\'")))
+  (add-to-list 'auto-mode-alist '("\\.jinja2\\'" . setup-jinja))
   :mode
-  "\\.html\\'" "\\.phtml\\'" "\\.handlebars\\'")
+  "\\.html\\'" "\\.phtml\\'" "\\.handlebars\\'" "\\.jinja2\\'")
 
 ;; Elisp:
 (use-package lisp-mode
@@ -398,6 +409,7 @@
       handlerbars-basic-offset my-indent
       c-default-style "linux")
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width my-indent)
 
 ;;; Shell:
 (add-to-list 'same-window-buffer-names "*shell*")
@@ -465,15 +477,6 @@
   :init
   (rg-use-old-defaults)
   (rg-enable-menu))
-
-(defun setup-jinja ()
-  (web-mode)
-  (setq indent-tabs-mode t)
-  (setq-default tab-width 4)
-  (web-mode-use-tabs)
-)
-
-(add-to-list 'auto-mode-alist '("\\.jinja2\\'" . setup-jinja))
 
 ;;; Custom:
 (custom-set-variables
