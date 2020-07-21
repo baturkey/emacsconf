@@ -164,11 +164,23 @@
     (interactive)
     (vagrant-ssh-command "php /opt/platform/magento/scripts/send_test_order_confirmation.php" "*util*"))
 
-  (define-transient-command vagrant-menu ()
+  (defun vagrant-send-test-credit-memo ()
+    (interactive)
+    (vagrant-ssh-command "php /opt/platform/magento/scripts/send_test_credit_memo.php" "*util*"))
+
+  (defun vagrant-get-global-messages ()
+    (interactive)
+    (vagrant-ssh-command "cd /opt/platform/node; node scripts/util/get_global_messages | sort -rn" "*util*"))
+
+  (defun vagrant-flush-magento-caches ()
+    (interactive)
+    (vagrant-ssh-command "cd /opt/platform/magento/shell; ./n98-magerun.phar cache:clean; ./n98-magerun.phar cache:flush; ./n98-magerun.phar cache:dir:flush" "*util*"))
+
+  (transient-define-prefix vagrant-menu ()
     "Show menu buffer for vagrant commands."
     [
      ["System"
-      (3 "u" "Vagrant Up" vagrant-up-provision)
+      (3 "u" "Vagrant Up Provision" vagrant-up-provision)
       (3 "r" "Vagrant Reload" vagrant-reload)
       (3 "p" "Vagrant Provision" vagrant-provision)
       (3 "h" "Vagrant Halt" vagrant-halt)
@@ -177,6 +189,7 @@
      ["Services"
        (3 "s" "Restart Services" vagrant-restart-services)
        (3 "c" "Sync Catalog" vagrant-catalog-sync)
+       (3 "F" "Flush Magento Caches" vagrant-flush-magento-caches)
        ]
      ]
 
@@ -200,7 +213,8 @@
      ["Misc"
       (3 "t" "Run Tests" vagrant-run-tests)
       (3 "f" "Fetch product JSON" vagrant-fetch-product-json)
-      (3 "S" "Send Test Order Confirmation" vagrant-send-test-order-confirmation)
+      (3 "S" "Send Test Credit Memo" vagrant-send-test-credit-memo)
+      (3 "m" "Get Global Messages" vagrant-get-global-messages)
       ]
      ]
     )
@@ -229,6 +243,8 @@
   :bind
   (:map js2-mode-map
         ("M-." . nil))
+  :functions
+  xref-js2-xref-backend
   :config
   (defun javascript-hook ()
     (setq js2-strict-missing-semi-warning nil
@@ -340,13 +356,6 @@
       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
   :hook
   (org-after-todo-statistics-hook . org-summary-todo))
-
-;; Scala:
-(use-package ensime
-  :init
-  (setq ensime-startup-notification nil
-        ensime-sbt-command "/usr/local/sbt/bin/sbt"
-        sbt:program-name "/usr/local/sbt/bin/sbt"))
 
 ;;; Minor modes:
 ;; Disable abbrev mode:
@@ -461,17 +470,11 @@
 
 (use-package diffview)
 
-(use-package github-review)
-
 (defun eshell-top ()
   (interactive)
   (eshell-command "top"))
 
 (bind-key "C-c =" 'eshell-top)
-
-(use-package mastodon
-  :init
-  (setq mastodon-instance-url "https://flumph.masto.host"))
 
 (use-package rg
   :init
@@ -505,7 +508,7 @@
      ("CNN - Top Stories" "http://rss.cnn.com/rss/cnn_topstories.rss" nil nil nil))))
  '(package-selected-packages
    (quote
-    (python emojify docker malyon hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar nnhackernews window-purpose wttrin use-package swiper mastodon github-review ensime dumb-jump diffview airline-themes))))
+    (all-the-icons scala-mode mpv versuri lastfm python docker hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar window-purpose wttrin use-package swiper dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
