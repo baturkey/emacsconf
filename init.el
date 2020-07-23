@@ -21,6 +21,7 @@
       mode-require-final-newline nil
       split-width-threshold 200
       exec-path (append '("/usr/local/bin") exec-path)
+      confirm-kill-processes nil
       )
 (display-time-mode "t")
 (scroll-bar-mode 0)
