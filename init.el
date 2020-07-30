@@ -226,7 +226,9 @@
 ;; Dumb Jump:
 (use-package dumb-jump
   :config
-  (setq dumb-jump-force-searcher 'rg))
+  (setq dumb-jump-force-searcher 'rg
+        xref-backend-functions (remq 'etags--xref-backend xref-backend-functions))
+  (add-to-list 'xref-backend-functions 'dumb-jump-xref-activate t))
 
 ;; Powerline:
 (use-package powerline)
@@ -463,6 +465,11 @@
     (regexp-opt '(".mp3" ".m4a" ".aac"))
     "afplay"))
 
+;; Youtube Download:
+(use-package ytdl
+  :init
+  (setq ytdl-music-folder "~/Music/YouTube"))
+
 ;;; Weather:
 (use-package wttrin
   :init
@@ -509,7 +516,7 @@
      ("CNN - Top Stories" "http://rss.cnn.com/rss/cnn_topstories.rss" nil nil nil))))
  '(package-selected-packages
    (quote
-    (all-the-icons scala-mode mpv versuri lastfm python docker hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar window-purpose wttrin use-package swiper dumb-jump diffview airline-themes))))
+    (ytdl all-the-icons scala-mode mpv versuri lastfm python docker hackernews edbi edbi-database-url vagrant-tramp flycheck smartparens php-mode js2-highlight-vars js2-mode js2-refactor vagrant rg magit web-mode emms pianobar window-purpose wttrin use-package swiper dumb-jump diffview airline-themes))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
